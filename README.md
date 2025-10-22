@@ -16,7 +16,6 @@ A production-ready **Retrieval-Augmented Generation (RAG)** API system that inge
 6. [Environment Variables](#environment-variables)
 7. [Docker Deployment](#docker-deployment)
 8. [Testing the API](#testing-the-api)
-9. [Troubleshooting](#troubleshooting)
 
 ---
 
