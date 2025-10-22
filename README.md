@@ -631,20 +631,6 @@ redis-server
 # Or check if Redis is running
 redis-cli ping  # Should return PONG
 ```
-
-### Issue: "UNIQUE constraint failed: chunk_metadata.faiss_id"
-
-**Solution:**
-```bash
-# Run the database migration script
-python fix_database.py
-
-# Restart the worker
-python ingestion_worker.py
-```
-
-See `UNIQUE_CONSTRAINT_FIX.md` for detailed explanation.
-
 ### Issue: "No module named 'torch'"
 
 **Solution:**
