@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: rag_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag_api
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - REDIS_HOST=redis
+      - DATABASE_URL=sqlite:///./rag_system.db
+      - LLM_API_KEY=${LLM_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: python app.py
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag_worker
+    environment:
+      - REDIS_HOST=redis
+      - DATABASE_URL=sqlite:///./rag_system.db
+      - LLM_API_KEY=${LLM_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: python ingestion_worker.py
+
+volumes:
+  redis_data:
+

@@ -1,0 +1,17 @@
+Flask
+Flask-CORS
+redis
+faiss-cpu
+litellm
+requests
+beautifulsoup4
+lxml
+python-dotenv
+SQLAlchemy
+sentence-transformers
+numpy
+torch
+langchain
+langchain-community
+pydantic
+html2text
