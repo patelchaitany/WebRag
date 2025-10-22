@@ -369,7 +369,7 @@ curl -X POST http://localhost:5000/query \
 ### Step 1: Clone and Navigate
 
 ```bash
-cd /home/phinex/hack/AiAR
+cd WebRag
 ```
 
 ### Step 2: Create Virtual Environment
@@ -617,102 +617,7 @@ Expected response (should return 200 with existing data):
 }
 ```
 
----
 
-## 🐛 Troubleshooting
-
-### Issue: "Connection refused" on Redis
-
-**Solution:**
-```bash
-# Start Redis
-redis-server
-
-# Or check if Redis is running
-redis-cli ping  # Should return PONG
-```
-### Issue: "No module named 'torch'"
-
-**Solution:**
-```bash
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-```
-
-### Issue: Worker not processing URLs
-
-**Check:**
-1. Redis is running: `redis-cli ping`
-2. Worker is running: Check terminal output
-3. Check logs: `tail -f ./logs/app.log`
-4. Check Redis queue: `redis-cli LLEN url_ingestion_queue`
-
-### Issue: Slow query responses
-
-**Optimization:**
-1. Reduce `top_k` parameter
-2. Increase `CHUNK_SIZE` to reduce number of chunks
-3. Use GPU-accelerated FAISS (install `faiss-gpu`)
-4. Use a faster LLM model
-
-### Issue: Out of memory
-
-**Solution:**
-1. Reduce `MAX_CHUNKS_PER_URL`
-2. Reduce `CHUNK_SIZE`
-3. Use a smaller embedding model
-4. Deploy on a machine with more RAM
-
----
-
-## 📁 Project Structure
-
-```
-AiAR/
-├── app.py                      # Flask API server
-├── ingestion_worker.py         # Background worker
-├── models.py                   # SQLAlchemy models
-├── config.py                   # Configuration
-├── vector_store.py             # FAISS wrapper
-├── llm_provider.py             # LLM integration
-├── prompts.py                  # System prompts
-├── fix_database.py             # Database migration
-├── requirements.txt            # Python dependencies
-├── .env.example                # Example environment file
-├── Dockerfile                  # Docker image
-├── docker-compose.yml          # Docker Compose config
-├── README.md                   # This file
-├── data/
-│   └── faiss_index/            # FAISS index files
-├── logs/
-│   └── app.log                 # Application logs
-└── rag_system.db               # SQLite database
-```
-
----
-
-## 📄 License
-
-MIT License - See LICENSE file for details
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
----
-
-## 📞 Support
-
-For issues and questions:
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Review logs in `./logs/app.log`
-3. Check `UNIQUE_CONSTRAINT_FIX.md` for known issues
-4. Open an issue on GitHub
 
 ---
 
